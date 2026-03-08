@@ -81,6 +81,10 @@
       color: lightgray;
     }
 
+    .rating-star {
+      color: gold;
+    }
+
     button {
       width: 100%;
       padding: 10px;
@@ -211,7 +215,7 @@
         let ratingStars = "";
 
         for (let j = 0; j < movies[i].rating; j++) {
-          ratingStars += "★";
+          ratingStars += "<span class='rating-star'>★</span>";
         }
 
         //adds the movie to the list
