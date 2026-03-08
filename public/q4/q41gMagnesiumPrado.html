@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add a movie</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px 0;
+      background-color: #ffffff;
+      font-family: "Comic Sans MS", "Comic Sans", cursive;
+      display: flex;
+      justify-content: center;
+    }
+
+    .movie_box {
+      width: 360px;
+      background-color: rgb(255, 255, 255);
+      border: 1px solid rgb(61, 59, 59);
+      border-radius: 12px;
+      padding: 24px 24px 28px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .movie_box:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0 0 24px;
+      font-size: 2rem;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 22px;
+      margin-bottom: 0;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      margin-top: 13px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cfcfcf;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .stars {
+      margin-top: 8px;
+      margin-bottom: 18px;
+      font-size: 25px;
+      letter-spacing: 5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    .star {
+      color: lightgray;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #0d6efd;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-family: inherit;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0b5ed7;
+    }
+
+    #movieList {
+      min-height: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="movie_box">
+    <!-- Main menu -->
+    <h1>add a movie</h1>
+    <p class="subtitle">any movie... 😈</p>
+
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" />
+
+    <label for="year">Year:</label>
+    <input type="text" id="year" name="year" />
+
+    <label for="genre">Genre:</label>
+    <select id="genre" name="genre">
+      <option>Action</option>
+      <option>Horror</option>
+      <option>Romance</option>
+      <option>Drama</option>
+      <option>Comedy</option>
+      <option>Animation</option>
+    </select>
+
+    <label>Rating:</label>
+    <div class="stars">
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+      <span class="star">★</span>
+    </div>
+
+    <!-- add movie button-->
+
+    <button type="button" onclick="addMovie()">Add Movie</button>
+
+    <h2>Movie List</h2>
+    <ul id="movieList"></ul>
+  </div>
+
+  <script>
+    let selectedRating = 0;
+
+    /* star color updater */
+    let stars = document.querySelectorAll(".star");
+
+    for (let i = 0; i < stars.length; i++) {
+      stars[i].addEventListener("click", function () {
+        selectedRating = i + 1;
+
+        //loops through stars to check if they are above/below the user's input
+
+        for (let j = 0; j < stars.length; j++) {
+          if (j < selectedRating) {
+            stars[j].style.color = "gold";
+          } else {
+            stars[j].style.color = "lightgray";
+          }
+        }
+      });
+    }
+
+    /* ADD MOVIE */
+
+    function addMovie() {
+      let title = document.getElementById("title").value;
+      let year = document.getElementById("year").value;
+      let genre = document.getElementById("genre").value;
+
+      year = parseInt(year);
+
+      //checking if the year is realistic
+      if (year < 1800) {
+        alert("thats not a real movie release year lol");
+        return; 
+      }
+
+      let movies = JSON.parse(localStorage.getItem("movies")) || [];
+
+      //assigning an object for the movie
+
+      let movie = {
+        title: title,
+        year: year,
+        genre: genre,
+        rating: selectedRating
+      };
+
+      movies.push(movie);
+
+      localStorage.setItem("movies", JSON.stringify(movies));
+
+      displayMovies();
+    }
+
+    /* DISPLAY MOVIES */
+    function displayMovies() {
+
+      //retrieves all saved movies in localStorage
+      let movies = JSON.parse(localStorage.getItem("movies")) || [];
+      let list = document.getElementById("movieList");
+
+      //clears movies before adding new ones
+
+      list.innerHTML = "";
+
+      for (let i = 0; i < movies.length; i++) {
+        let ratingStars = "";
+
+        for (let j = 0; j < movies[i].rating; j++) {
+          ratingStars += "★";
+        }
+
+        //adds the movie to the list
+
+        list.innerHTML +=
+          "<li>" +
+          movies[i].title + " (" + movies[i].year + ") - " +
+          movies[i].genre + ", Rating: " + ratingStars +
+          "</li>";
+      }
+    }
+
+    //actually loads the movies
+    displayMovies();
+  </script>
+</body>
+</html>
