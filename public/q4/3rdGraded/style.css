@@ -25,6 +25,10 @@ Requirements for the navigation:
 nav {
     width: 100%;
     background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 nav a {
@@ -89,26 +93,26 @@ footer a {
     width: 32px;
     height: 32px;
     display: inline-block;
-    background: url('sprites.png') no-repeat;
+    background: url('images/sprites.png') no-repeat;
 }
 .facebook {
-    background-position: -226px -129px;
+    background-position: -226px -55px;
 }
 .twitter {
-    background-position: -340px -129px;
+    background-position: -340px -54px;
 }
 .github {
-    background-position: -456px -129px;
+    background-position: -456px -54px;
 }
 
 .facebook:hover {
-  background-position: -226px -55px;
+  background-position: -226px -129px;
 }
 .twitter:hover {
-  background-position: -340px -54px;
+  background-position: -340px -129px;
 }
 .github:hover {
-  background-position: -456px -54px;
+  background-position: -456px -129px;
 }
 
 /* --- CSS for documenting process in the table in the errorlogs.html --*/
